@@ -4,11 +4,11 @@ angular.module('toptal_todo.system').controller('HeaderController', ['$scope', '
     $scope.global = Global;
 
     $scope.menu = [{
-        'title': 'Articles',
-        'link': 'articles'
+        'title': 'Todos',
+        'link': 'todos'
     }, {
-        'title': 'Create New Article',
-        'link': 'articles/create'
+        'title': 'Create New Todo',
+        'link': 'todos/create'
     }];
     
     $scope.isCollapsed = false;
