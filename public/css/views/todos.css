@@ -4,6 +4,7 @@ h1 {
 
 ul.todos {
   list-style: none;
+  padding: 0;
 }
 
 ul.todos li {
@@ -13,6 +14,12 @@ ul.todos li {
 
 ul.todos input.due {
   width: 70px;
+  display: inline;
+}
+
+ul.todos input.task {
+  width: 80%;
+  max-width: calc(100% - 187px);
   display: inline;
 }
 
