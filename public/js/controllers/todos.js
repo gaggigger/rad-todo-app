@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('toptal_todo.todos').controller('TodosController', ['$scope', '$routeParams', '$location', 'Global', 'Todos', function ($scope, $routeParams, $location, Global, Todos) {
+angular.module('toptal_todo.todos').controller('TodosController', ['$scope', '$routeParams', '$location', '$element', 'Global', 'Todos', function ($scope, $routeParams, $location, $element, Global, Todos) {
     $scope.global = Global;
 
     $scope.create = function() {
@@ -56,4 +56,19 @@ angular.module('toptal_todo.todos').controller('TodosController', ['$scope', '$r
             $scope.todo = todo;
         });
     };
+
+    $scope.sortFlag = 'due';
+
+    $scope.sortByDue = function(e) {
+        $scope.sortFlag = 'due';
+    };
+
+    $scope.sortByPriority = function(e) {
+        $scope.sortFlag = 'priority';
+    };
+
+    $scope.isActive = function(flag) {
+        return $scope.sortFlag === flag;
+    };
+
 }]);

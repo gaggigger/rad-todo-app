@@ -5,8 +5,15 @@
         <div class="new-todo-wrapper">
           <form class="form-horizontal col-md-6 col-md-offset-3" role="form" data-ng-submit="create()">
             <div class="form-group">
-              <div class="col-md-10">
+              <div class="col-md-7">
                 <input type="text" class="form-control" data-ng-model="task" id="task" placeholder="Enter a todo..." required>
+              </div>
+              <div class="col-md-5">
+                <span>Sort By:</span>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-primary" ng-class="{active: isActive('due')}" ng-click="sortByDue()">Due Date</button>
+                  <button type="button" class="btn btn-primary" ng-class="{active: isActive('priority')}" ng-click="sortByPriority()">Priority</button>
+                </div>
               </div>
             </div>
           </form>
@@ -15,14 +22,14 @@
       <div class="row">
         <div class="col-md-6 col-md-offset-3">
           <ul class="todos unstyled">
-            <li data-ng-repeat="todo in todos">
+            <li data-ng-repeat="todo in todos | orderBy:sortFlag">
               <input type="checkbox" ng-model="todo.completed" ng-change="update()">
               <input type="number" ng-model="todo.priority" name="input" min="0" max="10" ng-change="update()">
               <input type="text" class="form-control due" datepicker-popup="M/dd" ng-model="todo.due" is-open="opened" ng-change="update()">
-              <span>{{todo.task}}</span>
+              <input type="text" class="form-control task" ng-model="todo.task" ng-change="update()">
             </li>
           </ul>
-          <h1 data-ng-hide="!todos || todos.length">No todos yet. <br> Why don't you <a href="/#!/todos/create">Create One</a>?</h1>
+          <h1 data-ng-hide="!todos || todos.length">No todos yet.</h1>
         </div>
       </div>
     </div>
