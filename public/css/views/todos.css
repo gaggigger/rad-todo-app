@@ -19,10 +19,14 @@ ul.todos input.due {
 
 ul.todos input.task {
   width: 80%;
-  max-width: calc(100% - 187px);
+  max-width: calc(100% - 210px);
   display: inline;
 }
 
 ul.todos input[type="checkbox"], ul.todos input[type="number"], ul.todos input[type="text"] {
   margin-right: 8px;
+}
+
+.new-todo-wrapper input {
+  margin-bottom: 8px;
 }
