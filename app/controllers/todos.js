@@ -88,13 +88,13 @@ exports.show = function(req, res) {
  * List of Articles
  */
 exports.all = function(req, res) {
-    Todo.find().sort('-created').populate('user', 'name email').exec(function(err, articles) {
+    Todo.find().sort('-created').populate('user', 'name email').exec(function(err, todos) {
         if (err) {
             res.render('error', {
                 status: 500
             });
         } else {
-            res.jsonp(articles);
+            res.jsonp(todos);
         }
     });
 };
