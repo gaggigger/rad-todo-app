@@ -18,7 +18,7 @@
             <li data-ng-repeat="todo in todos">
               <input type="checkbox" ng-model="todo.completed" ng-change="update()">
               <input type="number" ng-model="todo.priority" name="input" min="0" max="10" ng-change="update()">
-              <span>{{todo.due | date:'medium'}}
+              <input type="text" class="form-control due" datepicker-popup="M/dd" ng-model="todo.due" is-open="opened" ng-change="update()">
               <span>{{todo.task}}</span>
             </li>
           </ul>
