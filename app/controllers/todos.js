@@ -88,7 +88,7 @@ exports.show = function(req, res) {
  * List of Articles
  */
 exports.all = function(req, res) {
-    Todo.find().sort('-created').populate('user', 'name email').exec(function(err, todos) {
+    Todo.find().sort({priority: -1, created: -1}).populate('user', 'name email').exec(function(err, todos) {
         if (err) {
             res.render('error', {
                 status: 500
