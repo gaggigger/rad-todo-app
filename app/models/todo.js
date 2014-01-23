@@ -20,6 +20,18 @@ var TodoSchema = new Schema({
         default: '',
         trim: true
     },
+    completed: {
+        type: Boolean,
+        default: false
+    },
+    due: {
+        type: Date,
+        default: null
+    },
+    priority: {
+        type: Number,
+        default: 0
+    },
     user: {
         type: Schema.ObjectId,
         ref: 'User'
