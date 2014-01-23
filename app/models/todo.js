@@ -26,7 +26,7 @@ var TodoSchema = new Schema({
     },
     due: {
         type: Date,
-        default: null
+        default: Date.now
     },
     priority: {
         type: Number,
