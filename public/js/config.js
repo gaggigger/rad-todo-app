@@ -4,17 +4,17 @@
 angular.module('toptal_todo').config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-        when('/articles', {
-            templateUrl: 'views/articles/list.html'
+        when('/todos', {
+            templateUrl: 'views/todos/list.html'
         }).
-        when('/articles/create', {
-            templateUrl: 'views/articles/create.html'
+        when('/todos/create', {
+            templateUrl: 'views/todos/create.html'
         }).
-        when('/articles/:articleId/edit', {
-            templateUrl: 'views/articles/edit.html'
+        when('/todos/:articleId/edit', {
+            templateUrl: 'views/todos/edit.html'
         }).
-        when('/articles/:articleId', {
-            templateUrl: 'views/articles/view.html'
+        when('/todos/:articleId', {
+            templateUrl: 'views/todos/view.html'
         }).
         when('/', {
             templateUrl: 'views/index.html'

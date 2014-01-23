@@ -1,8 +1,8 @@
 'use strict';
 
-//Articles service used for articles REST endpoint
-angular.module('toptal_todo.articles').factory('Articles', ['$resource', function($resource) {
-    return $resource('articles/:articleId', {
+// Todos service used for todos REST endpoint
+angular.module('toptal_todo.todos').factory('todos', ['$resource', function($resource) {
+    return $resource('todos/:todoId', {
         articleId: '@_id'
     }, {
         update: {

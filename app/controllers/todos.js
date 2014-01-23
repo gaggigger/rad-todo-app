@@ -4,91 +4,91 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    Article = mongoose.model('Article'),
+    Todo = mongoose.model('Todo'),
     _ = require('lodash');
 
 
 /**
- * Find article by id
+ * Find todo by id
  */
-exports.article = function(req, res, next, id) {
-    Article.load(id, function(err, article) {
+exports.todo = function(req, res, next, id) {
+    Todo.load(id, function(err, todo) {
         if (err) return next(err);
-        if (!article) return next(new Error('Failed to load article ' + id));
-        req.article = article;
+        if (!todo) return next(new Error('Failed to load todo ' + id));
+        req.todo = todo;
         next();
     });
 };
 
 /**
- * Create a article
+ * Create a todo
  */
 exports.create = function(req, res) {
-    var article = new Article(req.body);
-    article.user = req.user;
+    var todo = new Todo(req.body);
+    todo.user = req.user;
 
-    article.save(function(err) {
+    todo.save(function(err) {
         if (err) {
             return res.send('users/signup', {
                 errors: err.errors,
-                article: article
+                todo: todo
             });
         } else {
-            res.jsonp(article);
+            res.jsonp(todo);
         }
     });
 };
 
 /**
- * Update a article
+ * Update a todo
  */
 exports.update = function(req, res) {
-    var article = req.article;
+    var todo = req.todo;
 
-    article = _.extend(article, req.body);
+    todo = _.extend(todo, req.body);
 
-    article.save(function(err) {
+    todo.save(function(err) {
         if (err) {
             return res.send('users/signup', {
                 errors: err.errors,
-                article: article
+                todo: todo
             });
         } else {
-            res.jsonp(article);
+            res.jsonp(todo);
         }
     });
 };
 
 /**
- * Delete an article
+ * Delete an todo
  */
 exports.destroy = function(req, res) {
-    var article = req.article;
+    var todo = req.todo;
 
-    article.remove(function(err) {
+    todo.remove(function(err) {
         if (err) {
             return res.send('users/signup', {
                 errors: err.errors,
-                article: article
+                todo: todo
             });
         } else {
-            res.jsonp(article);
+            res.jsonp(todo);
         }
     });
 };
 
 /**
- * Show an article
+ * Show an todo
  */
 exports.show = function(req, res) {
-    res.jsonp(req.article);
+    res.jsonp(req.todo);
 };
 
 /**
  * List of Articles
  */
 exports.all = function(req, res) {
-    Article.find().sort('-created').populate('user', 'name username').exec(function(err, articles) {
+    Todo.find().sort('-created').populate('user', 'name email').exec(function(err, articles) {
         if (err) {
             res.render('error', {
                 status: 500

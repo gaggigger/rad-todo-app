@@ -1,0 +1,14 @@
+<section data-ng-controller="TodosController" data-ng-init="findOne()">
+    <span>{{todo.created | date:'medium'}}</span>/
+    <span>{{todo.user.name}}</span>
+    <h2>{{todo.title}}</h2>
+    <div data-ng-show="global.user._id == todo.user._id">
+        <a class="btn" href="/#!/todos/{{todo._id}}/edit">
+        	<i class="glyphicon glyphicon-edit"></i>
+        </a> 
+        <a class="btn" data-ng-click="remove();">
+            <i class="glyphicon glyphicon-trash"></i>
+        </a>
+    </div>
+    <div>{{todo.content}}</div>
+</section>

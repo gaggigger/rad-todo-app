@@ -8,19 +8,14 @@ var mongoose = require('mongoose'),
 
 
 /**
- * Article Schema
+ * Todo Schema
  */
-var ArticleSchema = new Schema({
+var TodoSchema = new Schema({
     created: {
         type: Date,
         default: Date.now
     },
-    title: {
-        type: String,
-        default: '',
-        trim: true
-    },
-    content: {
+    task: {
         type: String,
         default: '',
         trim: true
@@ -34,17 +29,17 @@ var ArticleSchema = new Schema({
 /**
  * Validations
  */
-ArticleSchema.path('title').validate(function(title) {
-    return title.length;
-}, 'Title cannot be blank');
+TodoSchema.path('task').validate(function(task) {
+    return task.length;
+}, 'Task cannot be blank');
 
 /**
  * Statics
  */
-ArticleSchema.statics.load = function(id, cb) {
+TodoSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('user', 'name username').exec(cb);
+    }).populate('user', 'name email').exec(cb);
 };
 
-mongoose.model('Article', ArticleSchema);
+mongoose.model('Todo', TodoSchema);
