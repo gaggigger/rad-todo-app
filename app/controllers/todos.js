@@ -25,14 +25,11 @@ exports.todo = function(req, res, next, id) {
  */
 exports.create = function(req, res) {
     var todo = new Todo(req.body);
-    todo.user = req.user;
+    todo.user = req.user._id;
 
     todo.save(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                todo: todo
-            });
+            res.jsonp({ error: err.errors });
         } else {
             res.jsonp(todo);
         }
@@ -49,10 +46,7 @@ exports.update = function(req, res) {
 
     todo.save(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                todo: todo
-            });
+            res.jsonp({ error: err.errors });
         } else {
             res.jsonp(todo);
         }
@@ -67,10 +61,7 @@ exports.destroy = function(req, res) {
 
     todo.remove(function(err) {
         if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                todo: todo
-            });
+            res.jsonp({ error: err.errors });
         } else {
             res.jsonp(todo);
         }
