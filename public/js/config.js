@@ -4,17 +4,8 @@
 angular.module('toptal_todo').config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-        when('/todos', {
-            templateUrl: 'views/todos/list.html'
-        }).
-        when('/todos/create', {
-            templateUrl: 'views/todos/create.html'
-        }).
-        when('/todos/:articleId/edit', {
-            templateUrl: 'views/todos/edit.html'
-        }).
-        when('/todos/:articleId', {
-            templateUrl: 'views/todos/view.html'
+        when('/signin', {
+            templateUrl: 'views/sessions/create.html'
         }).
         when('/', {
             templateUrl: 'views/index.html'
@@ -31,3 +22,8 @@ angular.module('toptal_todo').config(['$locationProvider',
         $locationProvider.hashPrefix('!');
     }
 ]);
+
+//Setting Auth interceptor
+angular.module('toptal_todo').config(function($httpProvider) {
+    $httpProvider.interceptors.push('Auth')
+});

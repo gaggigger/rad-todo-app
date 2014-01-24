@@ -3,6 +3,11 @@
 angular.module('toptal_todo.todos').controller('TodosController', ['$scope', '$routeParams', '$location', '$element', 'Global', 'Todos', function ($scope, $routeParams, $location, $element, Global, Todos) {
     $scope.global = Global;
 
+    $scope.userData = Global.getCurrentUserData();
+    $scope.$watch('global.getCurrentUserData()', function(newData) {
+      $scope.userData = newData;
+    });
+    
     $scope.create = function() {
         var todo = new Todos({
             task: this.task
@@ -15,7 +20,7 @@ angular.module('toptal_todo.todos').controller('TodosController', ['$scope', '$r
         this.task = '';
     };
 
-    $scope.remove = function(todo) {
+    $scope.destroy = function(todo) {
         if (todo) {
             todo.$remove();
 

@@ -1,5 +1,5 @@
 <section data-ng-controller="TodosController" data-ng-init="find()">
-  <div ng-switch on="global.authenticated">
+  <div ng-switch on="userData.authenticated">
     <div ng-switch-when="true">
       <div class="row">
         <div class="new-todo-wrapper">
@@ -27,7 +27,7 @@
               <input type="number" ng-model="todo.priority" name="input" min="0" max="10" ng-change="update()">
               <input type="text" class="form-control due" datepicker-popup="M/dd" ng-model="todo.due" is-open="opened" ng-change="update()">
               <input type="text" class="form-control task" ng-model="todo.task" ng-change="update()">
-              <i class="glyphicon glyphicon-trash" ng-model="todo" ng-click="destroy()"></i>
+              <i class="glyphicon glyphicon-trash" ng-click="destroy(todo)"></i>
             </li>
           </ul>
           <h1 data-ng-hide="!todos || todos.length">No todos yet.</h1>
