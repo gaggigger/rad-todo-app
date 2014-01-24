@@ -13,8 +13,9 @@ angular.module('toptal_todo.system').factory('Auth', function($rootScope, $q, $w
     response: function(response) {
       if(response.status === 401) {
         // User not authenticated
+        console.log('Not authenticated.');
       }
       return response || $q.when(response);
     }
-  }
+  };
 });
