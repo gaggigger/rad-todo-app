@@ -7,7 +7,8 @@ var express = require('express'),
     mongoStore = require('connect-mongo')(express),
     flash = require('connect-flash'),
     helpers = require('view-helpers'),
-    config = require('./config');
+    config = require('./config'),
+    expressJwt = require('express-jwt');
 
 module.exports = function(app, passport, db) {
     app.set('showStackError', true);
@@ -42,6 +43,9 @@ module.exports = function(app, passport, db) {
         // The cookieParser should be above session
         app.use(express.cookieParser());
 
+        // Protect /todo routes with JWT
+        app.use('/todos', expressJwt({ secret: "toptal-todo-app-secret" }));
+
         // Request body parsing middleware should be above methodOverride
         app.use(express.urlencoded());
         app.use(express.json());
@@ -68,6 +72,13 @@ module.exports = function(app, passport, db) {
 
         // Routes should be at the last
         app.use(app.router);
+
+        // Catch from express-jwt and pipe down as 401
+        app.use(function(err, req, res, next){
+          if (err.constructor.name === 'UnauthorizedError') {
+            res.send(401, 'Unauthorized');
+          }
+        });
         
         // Setting the fav icon and static folder
         app.use(express.favicon());
