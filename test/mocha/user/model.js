@@ -17,13 +17,11 @@ describe('<Unit Test>', function() {
       user = new User({
         name: 'Full name',
         email: 'test@test.com',
-        username: 'user',
         password: 'password'
       });
       user2 = new User({
         name: 'Full name',
         email: 'test@test.com',
-        username: 'user',
         password: 'password'
       });
 
