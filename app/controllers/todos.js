@@ -15,6 +15,7 @@ exports.todo = function(req, res, next, id) {
   Todo.load(id, function(err, todo) {
     if (err) return next(err);
     if (!todo) return next(new Error('Failed to load todo ' + id));
+    if (todo.user._id.toString() !== req.user._id.toString()) return res.send(401, { error: new Error('Unauthorized') });
     req.todo = todo;
     next();
   });
@@ -79,7 +80,7 @@ exports.show = function(req, res) {
  * List of Articles
  */
 exports.all = function(req, res) {
-  Todo.find().sort({priority: -1, created: -1}).populate('user', 'name email').exec(function(err, todos) {
+  Todo.find({ user: req.user._id }).sort({priority: -1, created: -1}).populate('user', 'name email').exec(function(err, todos) {
     if (err) {
       res.render('error', {
         status: 500
