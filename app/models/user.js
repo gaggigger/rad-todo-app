@@ -11,15 +11,10 @@ var mongoose = require('mongoose'),
  * User Schema
  */
 var UserSchema = new Schema({
-  name: String,
-  email: String,
-  hashed_password: String,
-  provider: String,
-  salt: String,
-  facebook: {},
-  twitter: {},
-  github: {},
-  google: {}
+  name: { type: String },
+  email: { type: String, required: true, unique: true },
+  hashed_password: { type: String },
+  salt: { type: String }
 });
 
 /**
@@ -40,25 +35,17 @@ var validatePresenceOf = function(value) {
   return value && value.length;
 };
 
-// the below 4 validations only apply if you are signing up traditionally
 UserSchema.path('name').validate(function(name) {
-  // if you are authenticating by any of the oauth strategies, don't validate
-  if (!this.provider) return true;
   return (typeof name === 'string' && name.length > 0);
 }, 'Name cannot be blank');
 
 UserSchema.path('email').validate(function(email) {
-  // if you are authenticating by any of the oauth strategies, don't validate
-  if (!this.provider) return true;
   return (typeof email === 'string' && email.length > 0);
 }, 'Email cannot be blank');
 
 UserSchema.path('hashed_password').validate(function(hashed_password) {
-  // if you are authenticating by any of the oauth strategies, don't validate
-  if (!this.provider) return true;
   return (typeof hashed_password === 'string' && hashed_password.length > 0);
 }, 'Password cannot be blank');
-
 
 /**
  * Pre-save hook
@@ -66,10 +53,24 @@ UserSchema.path('hashed_password').validate(function(hashed_password) {
 UserSchema.pre('save', function(next) {
   if (!this.isNew) return next();
 
-  if (!validatePresenceOf(this.password) && !this.provider)
+  if (!validatePresenceOf(this.password))
     next(new Error('Invalid password'));
-  else
+  else {
     next();
+    // var self = this;
+    // var userModel = mongoose.model('User', UserSchema);
+    // userModel.findOne({ email: this.email }, 'email', function(err, results) {
+    //   if(err) {
+    //     next(err);
+    //   } else if(results) {
+    //     console.log('results', results);
+    //     self.invalidate('email', 'Email is already in use');
+    //     next(new Error('Email is already in use'));
+    //   } else {
+    //     next();
+    //   }
+    // });
+  }
 });
 
 /**

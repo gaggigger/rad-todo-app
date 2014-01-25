@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('toptal_todo.system').controller('SessionsController', ['$scope', '$http', '$window', '$location', 'Global', function ($scope, $http, $window, $location, Global) {
+angular.module('toptal_todo.system').controller('UsersController', ['$scope', '$http', '$window', '$location', 'Global', function ($scope, $http, $window, $location, Global) {
   $scope.global = Global;
-  $scope.user = { email: '', password: '' };
+  $scope.user = { email: '', password: '', name: '' };
   $scope.errors = {};
 
-  $scope.signin = function() {
+  $scope.register = function() {
     $http
-      .post('/users/session', $scope.user)
+      .post('/users', $scope.user)
       .success(function(data) {
         $window.sessionStorage.token = data.token;
         $window.sessionStorage.name = data.name;
@@ -24,13 +24,6 @@ angular.module('toptal_todo.system').controller('SessionsController', ['$scope',
           $scope.errors.email = data.error;
         }
       });
-  };
-
-  $scope.signout = function() {
-    delete $window.sessionStorage.token;
-    // Update var in angular service so views reflect the change
-    Global.refreshCurrentUserData();
-    $location.path('/');
   };
 
 }]);

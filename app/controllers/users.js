@@ -4,48 +4,26 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+  jwt = require('jsonwebtoken'),
+  passport = require('passport'),
   User = mongoose.model('User');
 
 /**
- * Auth callback
+ * Sign in User
  */
-exports.authCallback = function(req, res) {
-  res.redirect('/');
-};
-
-/**
- * Show login form
- */
-exports.signin = function(req, res) {
-  res.render('users/signin', {
-    title: 'Signin',
-    message: req.flash('error')
-  });
-};
-
-/**
- * Show sign up form
- */
-exports.signup = function(req, res) {
-  res.render('users/signup', {
-    title: 'Sign up',
-    user: new User()
-  });
-};
-
-/**
- * Logout
- */
-exports.signout = function(req, res) {
-  req.logout();
-  res.redirect('/');
-};
-
-/**
- * Session
- */
-exports.session = function(req, res) {
-  res.redirect('/');
+exports.signin = function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if(err) {
+      console.log(info);
+      return next(err);
+    }
+    if(!user) {
+      console.log(info);
+      return res.json(401, { error: 'Invalid email or password' });
+    }
+    var token = jwt.sign({ email: user.email, _id: user._id }, 'toptal-todo-app-secret', { expiresInMinutes: 60*24 });
+    res.json({ token: token, name: user.name });
+  })(req, res, next);
 };
 
 /**
@@ -53,51 +31,23 @@ exports.session = function(req, res) {
  */
 exports.create = function(req, res, next) {
   var user = new User(req.body);
-  var message = null;
-
-  user.provider = 'local';
+  var message = '';
+  
   user.save(function(err) {
     if (err) {
-      switch (err.code) {
-        case 11000:
-        case 11001:
-          message = 'Email already exists';
-          break;
-        default:
-          message = 'Please fill all the required fields';
+      console.log('Err: ' + err);
+      if(err.errors) {
+        var key = (err.errors.email !== undefined) ? 'email' : (err.errors.password !== undefined) ? 'password' : (err.errors.name !== undefined) ? 'name' : undefined;
+        message = (key) ? err.errors[key].message : '';
+      } else if(err && err.code && (err.code === 11000 || err.code === 11001)) {
+        message = 'Email is already in use';
       }
-
-      return res.render('users/signup', {
-        message: message,
-        user: user
-      });
+      return res.send(500, { error: message });
     }
     req.logIn(user, function(err) {
       if (err) return next(err);
-      return res.redirect('/');
+      var token = jwt.sign({ email: user.email, _id: user._id }, 'toptal-todo-app-secret', { expiresInMinutes: 60*24 });
+      return res.json({ token: token, name: user.name });
     });
   });
-};
-
-/**
- * Send User
- */
-exports.me = function(req, res) {
-  res.jsonp(req.user || null);
-};
-
-/**
- * Find user by id
- */
-exports.user = function(req, res, next, id) {
-  User
-    .findOne({
-      _id: id
-    })
-    .exec(function(err, user) {
-      if (err) return next(err);
-      if (!user) return next(new Error('Failed to load User ' + id));
-      req.profile = user;
-      next();
-    });
 };

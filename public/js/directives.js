@@ -9,6 +9,13 @@ angular.module('toptal_todo')
       restrict: 'A',
       require: 'ngModel',
       link: function(scope, element, attrs, ngModel) {
+        scope.$watch('errors', function(errors) {
+          if(errors.email !== undefined) {
+            ngModel.$setValidity('mongoose', false);
+          } else {
+            ngModel.$setValidity('mongoose', true);
+          }
+        });
         element.on('keydown', function() {
           return ngModel.$setValidity('mongoose', true);
         });

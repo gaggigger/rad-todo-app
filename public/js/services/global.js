@@ -4,7 +4,7 @@
 angular.module('toptal_todo.system').factory('Global', [ '$window',
   function($window) {
     var data = {
-      authenticated: $window.sessionStorage.token !== null,
+      authenticated: $window.sessionStorage.token !== undefined,
       name: $window.sessionStorage.name || ''
     };
 
@@ -19,7 +19,7 @@ angular.module('toptal_todo.system').factory('Global', [ '$window',
 
       refreshCurrentUserData: function() {
         data = {
-          authenticated: $window.sessionStorage.token !== null,
+          authenticated: $window.sessionStorage.token !== undefined,
           name: $window.sessionStorage.name || ''
         };
       },

@@ -4,6 +4,9 @@
 angular.module('toptal_todo').config(['$routeProvider',
   function($routeProvider) {
     $routeProvider
+      .when('/signup', {
+        templateUrl: 'views/users/create.html'
+      })
       .when('/signin', {
         templateUrl: 'views/sessions/create.html'
       })
