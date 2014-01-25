@@ -1,10 +1,10 @@
 'use strict';
 
 (function() {
-  describe('MEAN controllers', function() {
+  describe('Controller Spec', function() {
     describe('HeaderController', function() {
       // Load the controllers module
-      beforeEach(module('mean'));
+      beforeEach(module('toptal_todo'));
 
       var scope, HeaderController;
 

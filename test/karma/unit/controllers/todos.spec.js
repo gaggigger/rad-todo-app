@@ -34,15 +34,15 @@
 
         scope = $rootScope.$new();
 
-        TodosController = $controller('TodosController', {
-          $scope: scope
-        });
-
         $routeParams = _$routeParams_;
 
         $httpBackend = _$httpBackend_;
 
         $location = _$location_;
+
+        TodosController = $controller('TodosController', {
+          $scope: scope
+        });
 
       }));
 
@@ -90,8 +90,7 @@
         });
 
       it('$scope.create() with valid form data should send a POST request ' +
-        'with the form input values and then ' +
-        'locate to new object URL', function() {
+        'with the form input values', function() {
 
           // fixture expected POST data
           var postTodoData = function() {
@@ -108,6 +107,9 @@
             };
           };
 
+          // Set array to empty
+          scope.todos = [];
+
           // fixture mock form input values
           scope.task = 'A Test Todo!';
 
@@ -120,9 +122,6 @@
 
           // test form input(s) are reset
           expect(scope.task).toEqual('');
-
-          // test URL location to new object
-          expect($location.path()).toBe('/todos/' + responseTodoData()._id);
         });
 
       it('$scope.update() should update a valid todo', inject(function(Todos) {
@@ -157,9 +156,6 @@
         scope.update();
         $httpBackend.flush();
 
-        // test URL location to new object
-        expect($location.path()).toBe('/todos/' + putTodoData()._id);
-
       }));
 
       it('$scope.remove() should send a DELETE request with a valid todoId' +
@@ -178,7 +174,7 @@
           $httpBackend.expectDELETE(/todos\/([0-9a-fA-F]{24})$/).respond(204);
 
           // run controller
-          scope.remove(todo);
+          scope.destroy(todo);
           $httpBackend.flush();
 
           // test after successful delete URL location todos lis

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('toptal_todo.todos').controller('TodosController', ['$scope', '$routeParams', '$location', '$element', 'Global', 'Todos', function ($scope, $routeParams, $location, $element, Global, Todos) {
+angular.module('toptal_todo.todos').controller('TodosController', ['$scope', '$routeParams', '$location', 'Global', 'Todos', function ($scope, $routeParams, $location, Global, Todos) {
   $scope.global = Global;
 
   $scope.userData = Global.getCurrentUserData();
