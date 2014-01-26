@@ -22,6 +22,7 @@ var config = require('./config/config'),
   mongoose = require('mongoose');
 
 // Bootstrap db connection
+console.log("Connecting to: " + config.db);
 var db = mongoose.connect(config.db);
 
 // Bootstrap models
