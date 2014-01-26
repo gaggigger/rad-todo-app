@@ -22,7 +22,7 @@ var config = require('./config/config'),
   mongoose = require('mongoose');
 
 // Bootstrap db connection
-console.log("Connecting to: " + config.db);
+console.log('Connecting to: ' + config.db);
 var db = mongoose.connect(config.db);
 
 // Bootstrap models
@@ -51,7 +51,7 @@ var app = express();
 if(process.env.NODE_ENV === 'production') {
   app.use(function (req, res, next) {
     res.setHeader('Strict-Transport-Security', 'max-age=8640000; includeSubDomains');
-    if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] === "http") {
+    if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] === 'http') {
       return res.redirect(301, 'https://' + req.host + req.url);
     } else {
       return next();
