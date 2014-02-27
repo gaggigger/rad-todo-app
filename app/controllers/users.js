@@ -35,14 +35,16 @@ exports.create = function(req, res, next) {
   
   user.save(function(err) {
     if (err) {
+      var code = 500;
       console.log('Err: ' + err);
       if(err.errors) {
         var key = (err.errors.email !== undefined) ? 'email' : (err.errors.password !== undefined) ? 'password' : (err.errors.name !== undefined) ? 'name' : undefined;
         message = (key) ? err.errors[key].message : '';
       } else if(err && err.code && (err.code === 11000 || err.code === 11001)) {
         message = 'Email is already in use';
+        code = 401;
       }
-      return res.send(500, { error: message });
+      return res.send(code, { error: message });
     }
     req.logIn(user, function(err) {
       if (err) return next(err);

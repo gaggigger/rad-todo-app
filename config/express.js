@@ -43,9 +43,6 @@ module.exports = function(app, passport, db) {
         // The cookieParser should be above session
         app.use(express.cookieParser());
 
-        // Protect /todo routes with JWT
-        app.use('/todos', expressJwt({ secret: "toptal-todo-app-secret" }));
-
         // Request body parsing middleware should be above methodOverride
         app.use(express.urlencoded());
         app.use(express.json());
@@ -70,6 +67,12 @@ module.exports = function(app, passport, db) {
         // Connect flash for flash messages
         app.use(flash());
 
+        // Protect /todo routes with JWT
+        app.use('/todos', expressJwt({ secret: "toptal-todo-app-secret" }), function(req, res, next) {
+            if(!req.user) return res.send(401);
+            next();
+        });
+
         // Routes should be at the last
         app.use(app.router);
 
@@ -77,6 +80,12 @@ module.exports = function(app, passport, db) {
         app.use(function(err, req, res, next){
           if (err.constructor.name === 'UnauthorizedError') {
             res.send(401, 'Unauthorized');
+          } else if(~err.message.indexOf('Failed to load')) {
+            res.json(500, {
+                error: err.message
+            });
+          } else {
+            next();
           }
         });
         
@@ -88,6 +97,8 @@ module.exports = function(app, passport, db) {
         // silly, but valid, you can do whatever you like, set properties,
         // use instanceof etc.
         app.use(function(err, req, res, next) {
+            console.log('aa');
+            console.log(err);
             // Treat as 404
             if (~err.message.indexOf('not found')) return next();
 

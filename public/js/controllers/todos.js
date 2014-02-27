@@ -23,13 +23,26 @@ angular.module('toptal_todo.todos').controller('TodosController', ['$scope', '$r
 
   $scope.destroy = function(todo) {
     if (todo) {
-      todo.$remove();
-
-      for (var i in $scope.todos) {
-        if ($scope.todos[i] === todo) {
-          $scope.todos.splice(i, 1);
+      todo.$remove(function(todo) {
+        for (var i in $scope.todos) {
+          if ($scope.todos[i] === todo) {
+            $scope.todos.splice(i, 1);
+          }
         }
-      }
+        $scope.notfounderror = undefined;
+      }, function(response) {
+        if(response.data.error.indexOf('Failed to load') !== -1) {
+          for (var i in $scope.todos) {
+            if ($scope.todos[i] === todo) {
+              $scope.todos.splice(i, 1);
+            }
+          }
+          $scope.notfounderror = undefined;
+        } else {
+          console.log('To-do failed to be deleted.');
+          $scope.notfounderror = 'To-do failed to be deleted.';
+        }
+      });
     }
     else {
       $scope.todo.$remove();

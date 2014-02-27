@@ -12,9 +12,13 @@ var mongoose = require('mongoose'),
  * Find todo by id
  */
 exports.todo = function(req, res, next, id) {
+  console.log(id);
   Todo.load(id, function(err, todo) {
     if (err) return next(err);
-    if (!todo) return next(new Error('Failed to load todo ' + id));
+    if (!todo){
+      console.log('failed to load todo');
+      return next(new Error('Failed to load todo ' + id));
+    }
     if (todo.user._id.toString() !== req.user._id.toString()) return res.send(401, { error: new Error('Unauthorized') });
     req.todo = todo;
     next();
@@ -30,7 +34,7 @@ exports.create = function(req, res) {
 
   todo.save(function(err) {
     if (err) {
-      res.jsonp({ error: err.errors });
+      res.jsonp({ error: err.message });
     } else {
       res.jsonp(todo);
     }
@@ -47,7 +51,8 @@ exports.update = function(req, res) {
 
   todo.save(function(err) {
     if (err) {
-      res.jsonp({ error: err.errors });
+      console.log(err);
+      res.jsonp(500, { error: err.errors || err.message });
     } else {
       res.jsonp(todo);
     }
@@ -62,7 +67,7 @@ exports.destroy = function(req, res) {
 
   todo.remove(function(err) {
     if (err) {
-      res.jsonp({ error: err.errors });
+      res.jsonp(500, { error: err.message });
     } else {
       res.jsonp(todo);
     }

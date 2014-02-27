@@ -1,6 +1,7 @@
 <section data-ng-controller="TodosController" data-ng-init="find()">
   <div ng-switch on="userData.authenticated">
     <div ng-switch-when="true">
+      <div class="alert alert-danger" ng-show="notfounderror">{{notfounderror}}</div>
       <div class="row">
         <div class="new-todo-wrapper">
           <form class="form-horizontal col-md-8 col-md-offset-2" role="form" data-ng-submit="create()">

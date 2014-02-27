@@ -26,7 +26,28 @@ var TodoSchema = new Schema({
   },
   due: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    set: function(val) {
+      if(val === '') return null;
+      var d = new Date(val);
+      console.log("DDD");
+      console.log(d);
+      return (d != 'Invalid Date') ? val : undefined;
+    },
+    validate: [
+      {
+        validator: function(val) {
+          console.log(val);
+          if(!val) return false;
+
+          var r = new Date(val);
+          console.log("RRRR:");
+          console.log(r);
+          return r != 'Invalid Date';
+        },
+        msg: 'Due must be a valid date.'
+      }
+    ]
   },
   priority: {
     type: Number,
@@ -44,6 +65,18 @@ var TodoSchema = new Schema({
 TodoSchema.path('task').validate(function(task) {
   return task.length;
 }, 'Task cannot be blank');
+
+// TodoSchema.path('due').validate(function(due) {
+//   if(!due.length) return true;
+
+//   var r = new Date(due);
+//   return r != 'Invalid Date';
+// }, 'Due is an invalid date');
+
+TodoSchema.path('priority').validate(function(priority) {
+  var num = parseFloat(priority);
+  return !isNaN(num) && num >= 0;
+}, 'Priority must be greater than or equal to zero.');
 
 /**
  * Statics
